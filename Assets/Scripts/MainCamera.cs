@@ -15,13 +15,12 @@ public class MainCamera : MonoBehaviour
     {
         offset = this.transform.position - player.transform.position;
         borders = GameObject.FindGameObjectsWithTag("Border");
-        min = borders[0].transform.position.x - 5.5f;
+        min = borders[0].transform.position.x - 10.5f;
         max = borders[1].transform.position.x + 5.5f;
     }
 	
 	void Update ()
     {
-        //this.transform.position = player.transform.position + offset;
         if (player.transform.position.x < min && player.transform.position.x > max)
         {
             this.transform.position = player.transform.position + offset;
