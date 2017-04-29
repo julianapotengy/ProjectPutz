@@ -13,13 +13,20 @@ public class Player : MonoBehaviour
     bool canPickApple = false;
     bool applePicked = false;
     bool faceRight = true;
+    private float timer = 0;
+    public bool canWalk = true;
+    private GameObject walkTutorial;
+    private GameObject kid;
     #endregion
     void Start ()
 	{
         speed = 90 * Time.deltaTime;
         rb = this.GetComponent<Rigidbody2D>();
         anim = this.GetComponent<Animator>();
-	}
+        walkTutorial = GameObject.Find("WalkTutorial");
+        kid = GameObject.Find("Kid");
+        kid.GetComponent<KidScript>().enabled = false;
+    }
     void FixedUpdate()
     {
         float move = Input.GetAxis("Horizontal");
@@ -27,24 +34,32 @@ public class Player : MonoBehaviour
     }
     void Update ()
 	{
-        axisX = Input.GetAxis("Horizontal");
-        //axisY = Input.GetAxis("Vertical");
-        rb.velocity = new Vector2(axisX * speed, axisY);
+        if(canWalk)
+        {
+            axisX = Input.GetAxis("Horizontal");
+            //axisY = Input.GetAxis("Vertical");
+            rb.velocity = new Vector2(axisX * speed, axisY);
+            if (axisX > 0 && !faceRight)
+            {
+                Flip();
+            }
+            else if (axisX < 0 && faceRight)
+            {
+                Flip();
+            }
+        }
         if (canPickApple && Input.GetKeyUp(KeyCode.Q) && !applePicked)
         {
             StartCoroutine(apple.GetComponent<AppleScript>().FadeApple());
+            canWalk = false;
+            kid.GetComponent<KidScript>().enabled = true;
             applePicked = true;
         }
-        if(axisX > 0 && !faceRight)
-        {
-            Flip();
-        }
-        else if(axisX < 0 && faceRight)
-        {
-            Flip();
-        }
-	}
-
+        
+        timer += Time.deltaTime;
+        if (timer >= 7)
+            walkTutorial.SetActive(false);
+    }
     void Flip()
     {
         faceRight = !faceRight;
