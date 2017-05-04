@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
         }
         if (canPickApple && Input.GetKeyUp(KeyCode.Q) && !applePicked)
         {
-            StartCoroutine(apple.GetComponent<AppleScript>().FadeApple());
+            //StartCoroutine(apple.GetComponent<AppleScript>().FadeApple());
             canWalk = false;
             kid.GetComponent<KidScript>().enabled = true;
             applePicked = true;

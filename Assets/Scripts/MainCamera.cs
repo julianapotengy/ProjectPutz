@@ -13,7 +13,7 @@ public class MainCamera : MonoBehaviour
     public float min;
 
     private GameObject fadein;
-    private bool startFadin;
+    private bool startFadein;
 
     void Start ()
     {
@@ -22,7 +22,7 @@ public class MainCamera : MonoBehaviour
         min = borders[0].transform.position.x - 13f;
         max = borders[1].transform.position.x + 5.5f;
 
-        startFadin = true;
+        startFadein = true;
         fadein = GameObject.Find("FadeIn");
         fadein.GetComponent<Image>().color = new Color(0, 0, 0, 1);
     }
@@ -33,11 +33,11 @@ public class MainCamera : MonoBehaviour
         {
             this.transform.position = player.transform.position + offset;
         }
-        if (startFadin)
+        if (startFadein)
         {
             fadein.GetComponent<Image>().color -= new Color(0, 0, 0, 0.5f * Time.deltaTime);
             if (fadein.GetComponent<Image>().color.a <= 0)
-                startFadin = false;
+                startFadein = false;
         }
     }
 }

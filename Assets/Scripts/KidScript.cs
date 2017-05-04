@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class KidScript : MonoBehaviour
 {
-    private float speed;
     private GameObject player;
     private bool walk2Player = true;
     private float timer;
@@ -13,7 +12,6 @@ public class KidScript : MonoBehaviour
 
     private void Start()
     {
-        speed = 90 * Time.deltaTime;
         player = GameObject.FindGameObjectWithTag("Player");
         initialPos = new Vector3(this.transform.position.x, this.transform.position.y);
     }
@@ -25,13 +23,14 @@ public class KidScript : MonoBehaviour
             this.transform.position = Vector3.MoveTowards(this.transform.position, player.transform.position, 0.05f);
         }
         if (canCount)
+        {
             timer += Time.deltaTime;
+        }
         if(timer >= 4)
         {
             player.GetComponent<Player>().canWalk = true;
             this.transform.position = Vector3.MoveTowards(this.transform.position, initialPos, 0.05f);
         }
-        Debug.Log(timer);
     }
 
     private void OnCollisionStay2D(Collision2D col)
