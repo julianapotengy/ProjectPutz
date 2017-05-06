@@ -13,9 +13,7 @@ public class Player : MonoBehaviour
     bool canPickApple = false;
     bool applePicked = false;
     bool faceRight = true;
-    private float timer = 0;
     public bool canWalk = true;
-    private GameObject walkTutorial;
     private GameObject kid;
     #endregion
     void Start ()
@@ -23,7 +21,6 @@ public class Player : MonoBehaviour
         speed = 90 * Time.deltaTime;
         rb = this.GetComponent<Rigidbody2D>();
         anim = this.GetComponent<Animator>();
-        walkTutorial = GameObject.Find("WalkTutorial");
         kid = GameObject.Find("Kid");
         kid.GetComponent<KidScript>().enabled = false;
     }
@@ -48,17 +45,13 @@ public class Player : MonoBehaviour
                 Flip();
             }
         }
-        if (canPickApple && Input.GetKeyUp(KeyCode.Q) && !applePicked)
+        /*if (canPickApple && Input.GetKeyUp(KeyCode.Q) && !applePicked)
         {
             //StartCoroutine(apple.GetComponent<AppleScript>().FadeApple());
             canWalk = false;
             kid.GetComponent<KidScript>().enabled = true;
             applePicked = true;
-        }
-        
-        timer += Time.deltaTime;
-        if (timer >= 7)
-            walkTutorial.SetActive(false);
+        }*/
     }
     void Flip()
     {
@@ -70,14 +63,22 @@ public class Player : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if(col.gameObject.name.Equals("Point1"))
+        if(col.gameObject.name.Equals("AppleFallPoint"))
         {
             apple.GetComponent<Rigidbody2D>().gravityScale = 0.4f;
         }
 
-        else if (col.gameObject.name.Equals("Apple"))
+        else if (col.gameObject.Equals(apple))
         {
-            canPickApple = true;
+            StartCoroutine(apple.GetComponent<AppleScript>().FadeApple());
+            //canPickApple = true;
+            canWalk = false;
+            kid.GetComponent<KidScript>().enabled = true;
+            //applePicked = true;
+        }
+        else if (col.gameObject.name.Equals("Player2WalkPoint"))
+        {
+            Application.LoadLevel(2);
         }
     }
     private void OnTriggerExit2D(Collider2D col)
