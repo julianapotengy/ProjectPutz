@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     #region VariableDeclaration
-    private float axisX, axisY, speed;
+    private float axisX, speed;
     private Rigidbody2D rb;
     private Animator anim;
     [SerializeField] private GameObject apple;
@@ -13,7 +13,9 @@ public class Player : MonoBehaviour
     bool canPickApple = false;
     bool applePicked = false;
     bool faceRight = true;
+    public bool zoomOut = true;
     public bool canWalk = true;
+    public float activeZoom;
     private GameObject kid;
     #endregion
     void Start ()
@@ -34,8 +36,7 @@ public class Player : MonoBehaviour
         if(canWalk)
         {
             axisX = Input.GetAxis("Horizontal");
-            //axisY = Input.GetAxis("Vertical");
-            rb.velocity = new Vector2(axisX * speed, axisY);
+            rb.velocity = new Vector2(axisX * speed, this.gameObject.transform.position.y);
             if (axisX > 0 && !faceRight)
             {
                 Flip();
@@ -45,13 +46,9 @@ public class Player : MonoBehaviour
                 Flip();
             }
         }
-        /*if (canPickApple && Input.GetKeyUp(KeyCode.Q) && !applePicked)
-        {
-            //StartCoroutine(apple.GetComponent<AppleScript>().FadeApple());
-            canWalk = false;
-            kid.GetComponent<KidScript>().enabled = true;
-            applePicked = true;
-        }*/
+        if (zoomOut)
+            Camera.main.orthographicSize = Mathf.Lerp(4, 5, 5 * (Time.time - activeZoom));
+        else Camera.main.orthographicSize = Mathf.Lerp(5, 4, 5 * (Time.time - activeZoom));
     }
     void Flip()
     {
@@ -70,22 +67,15 @@ public class Player : MonoBehaviour
 
         else if (col.gameObject.Equals(apple))
         {
+            activeZoom = Time.time;
+            zoomOut = false;
             StartCoroutine(apple.GetComponent<AppleScript>().FadeApple());
-            //canPickApple = true;
             canWalk = false;
             kid.GetComponent<KidScript>().enabled = true;
-            //applePicked = true;
         }
         else if (col.gameObject.name.Equals("Player2WalkPoint"))
         {
             Application.LoadLevel(2);
-        }
-    }
-    private void OnTriggerExit2D(Collider2D col)
-    {
-        if (col.gameObject.name.Equals("Apple"))
-        {
-            canPickApple = false;
         }
     }
 }

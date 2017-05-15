@@ -5,7 +5,7 @@ using UnityEngine;
 public class KidScript : MonoBehaviour
 {
     private GameObject point;
-    private GameObject player;
+    private Player player;
     private bool walk2Player = true;
     private float timer;
     private bool canCount = false;
@@ -14,7 +14,7 @@ public class KidScript : MonoBehaviour
     private void Start()
     {
         point = GameObject.Find("Kid2WalkPoint");
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         initialPos = new Vector3(this.transform.position.x, this.transform.position.y);
     }
 
@@ -30,8 +30,9 @@ public class KidScript : MonoBehaviour
         }
         if(timer >= 4)
         {
-            player.GetComponent<Player>().canWalk = true;
+            player.canWalk = true;
             this.transform.position = Vector3.MoveTowards(this.transform.position, initialPos, 0.05f);
+            canCount = false;
         }
     }
     private void OnTriggerEnter2D(Collider2D col)
