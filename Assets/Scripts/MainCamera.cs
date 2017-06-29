@@ -19,8 +19,8 @@ public class MainCamera : MonoBehaviour
     {
         offset = this.transform.position - player.transform.position;
         borders = GameObject.FindGameObjectsWithTag("Border");
-        min = borders[0].transform.position.x - 13f;
-        max = borders[1].transform.position.x + 5.5f;
+        min = borders[0].transform.position.x - 15.7f;
+        max = borders[1].transform.position.x + 3.3f;
 
         startFadein = true;
         fadein = GameObject.Find("FadeIn");
