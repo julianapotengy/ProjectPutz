@@ -5,7 +5,6 @@ using UnityEngine;
 public class GroundCheck : MonoBehaviour
 {
     private PlayerScript player;
-    
 	void Start ()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
