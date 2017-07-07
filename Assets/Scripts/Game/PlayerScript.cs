@@ -8,22 +8,27 @@ public class PlayerScript : MonoBehaviour
     float axisX, axisY, speed;
     public float jumpForce;
     Rigidbody2D rb;
+    Animator anim;
     bool running;
     bool faceRight = true;
-    public bool canJump = false;
+    public bool grounded = false;
     public bool canMove = true;
     #endregion
     void Start ()
     {
-        speed = 90 * Time.deltaTime;
+        speed = 70 * Time.deltaTime;
         //jumpForce = 6000;
         rb = this.GetComponent<Rigidbody2D>();
+        anim = this.GetComponent<Animator>();
     }
     void FixedUpdate()
     {
         float move = Input.GetAxis("Horizontal");
+        anim.SetFloat("speed", Mathf.Abs(move));
+        anim.SetBool("canJump", grounded);
+        anim.SetBool("running", running);
 
-        if(canMove)
+        if (canMove)
         {
             if (running)
             {
@@ -31,7 +36,7 @@ public class PlayerScript : MonoBehaviour
             }
             else rb.velocity = new Vector2(axisX * speed, axisY);
 
-            if (canJump && (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)))
+            if (grounded && (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)))
             {
                 rb.AddForce(Vector2.up * jumpForce);
             }
@@ -65,13 +70,5 @@ public class PlayerScript : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
-    }
-    private void OnCollisionStay2D(Collision2D col)
-    {
-        if (col.gameObject.tag.Equals("Platform"))
-        {
-            canJump = true;
-        }
-        else canJump = false;
     }
 }

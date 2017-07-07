@@ -11,14 +11,17 @@ public class GroundCheck : MonoBehaviour
 	}
     private void OnTriggerEnter2D(Collider2D col)
     {
-        player.canJump = true;
+        if(col.gameObject.tag.Equals("Platform"))
+            player.grounded = true;
     }
     private void OnTriggerStay2D(Collider2D col)
     {
-        player.canJump = true;
+        if (col.gameObject.tag.Equals("Platform"))
+            player.grounded = true;
     }
     private void OnTriggerExit2D(Collider2D col)
     {
-        player.canJump = false;
+        if (col.gameObject.tag.Equals("Platform"))
+            player.grounded = false;
     }
 }
